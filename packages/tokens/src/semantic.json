@@ -1,0 +1,36 @@
+{
+    "color": {
+        "$type": "color",
+        "background": {
+            "primary": {
+                "$value": "{color.neutral.50}"
+            },
+            "inverse": {
+                "$value": "{color.neutral.900}"
+            }
+        },
+        "text": {
+            "primary": {
+                "$value": "{color.neutral.900}"
+            },
+            "secondary": {
+                "$value": "{color.neutral.500}"
+            },
+            "inverse": {
+                "$value": "{color.neutral.50}"
+            }
+        }
+    },
+    "button": {
+        "primary": {
+            "background": {
+                "$type": "color",
+                "$value": "{color.primary.500}"
+            },
+            "text": {
+                "$type": "color",
+                "$value": "{color.neutral.50}"
+            }
+        }
+    }
+}

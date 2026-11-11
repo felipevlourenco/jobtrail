@@ -4,15 +4,17 @@
     "private": true,
     "type": "module",
     "exports": {
-        "./styles.css": "./src/styles/index.css"
+        "./tokens.css": "./dist/tokens.css",
+        "./tokens": "./dist/tokens.ts"
     },
     "sideEffects": [
         "**/*.css"
     ],
     "scripts": {
-        "build": "tsc --noEmit",
-        "dev": "tsc --noEmit --watch",
-        "typecheck": "tsc --noEmit",
+        "build": "style-dictionary build --config style-dictionary.config.js",
         "clean": "rm -rf dist"
+    },
+    "devDependencies": {
+        "style-dictionary": "^5.8.0"
     }
 }

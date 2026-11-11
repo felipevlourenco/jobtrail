@@ -15,3 +15,13 @@
     **Where:** apps/lab/src/playground/CardList.tsx (the index-key bug)
 
 </details>
+
+## Day 2 — Nov 11
+
+<details>
+    <summary>Why not use raw hex values or a Tailwind palette directly in components? What does the semantic layer buy you?</summary>
+
+    Semantic tokens separate design intent from implementation, enabling consistent styling, easy theming, centralized updates, and better maintainability without changing individual components.
+    **Where:** packages/tokens/src/semantic.json
+
+</details>
