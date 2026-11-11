@@ -1,0 +1,18 @@
+.button {
+    padding: var(--spacing-md);
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-size: var(--font-size-md);
+    transition: background 150ms ease;
+}
+
+.button--primary {
+    background: var(--button-primary-background);
+    color: var(--button-primary-text);
+}
+
+.button--secondary {
+    background: var(--color-neutral-50);
+    color: var(--text-primary);
+}

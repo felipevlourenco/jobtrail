@@ -1,0 +1,29 @@
+{
+    "name": "jobtrail",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "dev": "turbo dev --filter=lab",
+        "build": "turbo build",
+        "typecheck": "turbo typecheck",
+        "lint": "turbo lint",
+        "clean": "turbo clean"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devEngines": {
+        "packageManager": {
+            "name": "pnpm",
+            "version": "12.18.0",
+            "onFail": "download"
+        }
+    },
+    "packageManager": "pnpm@12.18.0",
+    "type": "module",
+    "devDependencies": {
+        "turbo": "^2.11.10",
+        "typescript": "^7.0.2"
+    }
+}
