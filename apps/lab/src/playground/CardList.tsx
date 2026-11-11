@@ -15,7 +15,10 @@ function CardList() {
 
     return (
         <div>
-            <Button onClick={() => setReversedList((prev) => !prev)}>
+            <Button
+                variant="primary"
+                onClick={() => setReversedList((prev) => !prev)}
+            >
                 Reverse the list
             </Button>
             {cardsList.map((card, index) => (

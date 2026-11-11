@@ -13,6 +13,6 @@
 }
 
 .button--secondary {
-    background: var(--color-text-primary);
-    color: var(--color-text-inverse);
+    background: var(--button-secondary-background);
+    color: var(--button-secondary-text);
 }

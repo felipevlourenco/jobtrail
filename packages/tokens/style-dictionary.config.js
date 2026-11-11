@@ -62,7 +62,7 @@ export default {
         },
 
         typescript: {
-            transforms: [],
+            transforms: ['name/kebab'],
             buildPath: 'dist/',
             files: [
                 {
