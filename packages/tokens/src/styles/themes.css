@@ -3,16 +3,22 @@
     --background-primary: var(--color-neutral-50);
     --text-primary: var(--color-neutral-900);
     --text-secondary: var(--color-neutral-500);
+    --border-primary: var(--background-primary);
 
     --button-primary-background: var(--color-primary-500);
     --button-primary-text: #ffffff;
+
+    --card-border: 1px solid var(--text-primary);
 }
 
 [data-theme='dark'] {
     --background-primary: var(--color-neutral-900);
     --text-primary: var(--color-neutral-50);
     --text-secondary: #a3a3a3;
+    --border-primary: var(--background-primary);
 
     --button-primary-background: var(--color-primary-900);
     --button-primary-text: #ffffff;
+
+    --card-border: 1px solid var(--text-primary);
 }

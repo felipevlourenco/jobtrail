@@ -3,3 +3,11 @@
     background: var(--background-primary);
     color: var(--text-primary);
 }
+
+body {
+    margin: 0;
+}
+
+main {
+    padding: var(--spacing-md);
+}
