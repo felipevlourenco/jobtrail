@@ -42,3 +42,15 @@
     **Where:** packages/tokens/build.js
 
 </details>
+
+## Day 4 — Nov 12
+
+<details>
+    <summary>How do you design a component API that's flexible but still keeps the UI consistent?</summary>
+
+    Prefer small set of meaninful props over many style props. Style props can break consistence.
+    Use the same names for similart ideas across the components (size = 'md').
+    Extend the native elements, like Button should extend button props.
+    **Where:** packages/ui/src/components/Button/Button.tsx
+
+</details>
