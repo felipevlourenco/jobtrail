@@ -106,6 +106,9 @@
             "900": {
                 "$value": "#7f1d1d"
             }
+        },
+        "transparent": {
+            "$value": "#00000000"
         }
     },
     "spacing": {

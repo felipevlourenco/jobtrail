@@ -108,6 +108,24 @@
             "text": {
                 "$type": "color",
                 "$value": "{color.neutral.900}"
+            },
+            "backgroundHover": {
+                "$type": "color",
+                "$value": "{color.neutral.200}"
+            }
+        },
+        "ghost": {
+            "background": {
+                "$type": "color",
+                "$value": "{color.transparent}"
+            },
+            "text": {
+                "$type": "color",
+                "$value": "{color.neutral.900}"
+            },
+            "backgroundHover": {
+                "$type": "color",
+                "$value": "{color.neutral.100}"
             }
         },
         "danger": {
@@ -118,6 +136,10 @@
             "text": {
                 "$type": "color",
                 "$value": "{color.neutral.50}"
+            },
+            "backgroundHover": {
+                "$type": "color",
+                "$value": "{color.danger.700}"
             }
         }
     }

@@ -1,3 +1,4 @@
+import { Button } from '@repo/ui';
 import { useState } from 'react';
 import './App.css';
 import CardList from './playground/CardList';
@@ -34,8 +35,10 @@ function App() {
 
     return (
         <main data-theme={theme}>
-            <div>
-                <button onClick={handleThemeChange}>Toggle theme</button>
+            <div style={{ margin: '16px 0px' }}>
+                <Button variant="primary" size="md" onClick={handleThemeChange}>
+                    Toggle theme
+                </Button>
             </div>
             <CardList />
         </main>
