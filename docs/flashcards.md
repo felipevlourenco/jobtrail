@@ -25,3 +25,20 @@
     **Where:** packages/tokens/src/semantic.json
 
 </details>
+
+## Day 3 — Nov 12
+
+<details>
+    <summary>What should a theme file (light.json / dark.json) contain, and what should it leave out?</summary>
+
+    Only the semantic tokens whose value changes between themes (colors, maybe shadows), as aliases to primitives. Spacing, radius and font size stay in primitive.json, so they aren't duplicated and can't drift apart.
+    **Where:** packages/tokens/src/themes/dark.json
+
+</details>
+<details>
+    <summary>How does one token set become light and dark CSS, and how does the app switch between them?</summary>
+
+    build.js runs Style Dictionary once for the primitives and once per theme (primitives as `include`, the theme as `source`, filter `token.isSource` so only theme tokens are emitted). Light is `:root`, dark is `[data-theme="dark"]`. Same variable names in both; set `data-theme` on `<html>` to switch. Package `exports` decides which paths can be imported.
+    **Where:** packages/tokens/build.js
+
+</details>
