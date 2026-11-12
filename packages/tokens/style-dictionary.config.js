@@ -38,7 +38,7 @@ function formatTypeScript({ dictionary }) {
 }
 
 export default {
-    source: ['src/**/*.json'],
+    source: ['src/primitive.json'],
 
     hooks: {
         formats: {

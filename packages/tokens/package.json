@@ -5,13 +5,15 @@
     "type": "module",
     "exports": {
         "./tokens.css": "./dist/tokens.css",
+        "./theme-light.css": "./dist/theme-light.css",
+        "./theme-dark.css": "./dist/theme-dark.css",
         "./tokens": "./dist/tokens.ts"
     },
     "sideEffects": [
         "**/*.css"
     ],
     "scripts": {
-        "build": "style-dictionary build --config style-dictionary.config.js",
+        "build": "node build.js",
         "clean": "rm -rf dist"
     },
     "devDependencies": {
