@@ -13,6 +13,11 @@ await new StyleDictionary({
             buildPath: 'dist/',
             files: [{ destination: 'tokens.css', format: 'css/variables' }],
         },
+        typescript: {
+            transforms: ['name/kebab'],
+            buildPath: 'dist/',
+            files: [{ destination: 'tokens.ts', format: 'typescript/tokens' }],
+        },
     },
 }).buildAllPlatforms();
 
@@ -32,6 +37,17 @@ for (const [name, selector] of Object.entries(themes)) {
                         format: 'css/variables',
                         filter: (token) => token.isSource, // drop the primitives
                         options: { selector, outputReferences: true },
+                    },
+                ],
+            },
+            typescript: {
+                transforms: ['name/kebab'],
+                buildPath: 'dist/',
+                files: [
+                    {
+                        destination: `tokens.${name}.ts`,
+                        format: 'typescript/tokens',
+                        filter: (token) => token.isSource,
                     },
                 ],
             },

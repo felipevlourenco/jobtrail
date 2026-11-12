@@ -7,7 +7,9 @@
         "./tokens.css": "./dist/tokens.css",
         "./theme-light.css": "./dist/theme-light.css",
         "./theme-dark.css": "./dist/theme-dark.css",
-        "./tokens": "./dist/tokens.ts"
+        "./tokens": "./dist/tokens.ts",
+        "./tokens.light": "./dist/tokens.light.ts",
+        "./tokens.dark": "./dist/tokens.dark.ts"
     },
     "sideEffects": [
         "**/*.css"
