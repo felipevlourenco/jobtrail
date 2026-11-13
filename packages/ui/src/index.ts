@@ -10,3 +10,7 @@ export {
 } from './components/Button/Button';
 export { Card, type CardProps } from './components/Card/Card';
 export { Spinner } from './components/Spinner/Spinner';
+export {
+    TextField,
+    type TextFieldProps,
+} from './components/TextField/TextField';

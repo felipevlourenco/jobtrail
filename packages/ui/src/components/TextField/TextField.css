@@ -1,0 +1,29 @@
+.textfiled--wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.textfiled--label {
+    font-size: var(--font-size-sm);
+}
+
+.textfiled--input {
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border-strong);
+
+    &:hover {
+        border: 1px solid var(--color-border-focus);
+    }
+}
+
+.textfiled--hint {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+}
+
+.textfiled--error {
+    font-size: var(--font-size-xs);
+    color: var(--color-danger-text);
+}
