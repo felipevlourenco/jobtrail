@@ -54,3 +54,20 @@
     **Where:** packages/ui/src/components/Button/Button.tsx
 
 </details>
+
+## Day 5 — Nov 13
+
+<details>
+    <summary>How is the Dialog built as a compound component, and how does React state stay in sync with the native `<dialog>`?</summary>
+
+    `Dialog` is a root that holds `open` state in a context (plus a `useId` title id); `Trigger`, `Content` and `Title` read it with a hook that throws outside `<Dialog>`. They are attached with `Object.assign(DialogRoot, {...})`, so usage is `<Dialog.Trigger>`. `Content` uses a ref and an effect: `open` true calls `showModal()`, false calls `close()`. The native `onClose` (Esc, backdrop) calls `setOpen(false)` so state follows the DOM.
+    **Where:** packages/ui/src/components/Dialog/Dialog.tsx
+
+</details>
+<details>
+    <summary>How do you get typed, validated values from a form submitted with a React `action`?</summary>
+
+    `<form action={fn}>` passes `fn` a `FormData` directly (no `preventDefault`). `FormData.get()` returns `string | File | null`, so parse it once at the boundary into an interface (`parseApplication`) instead of casting. Only inputs with a `name` are included. Validation errors go in state and are passed to each field's `error` prop. `useFormStatus` only works in a child of the form.
+    **Where:** apps/lab/src/Application/ApplicationForm.tsx
+
+</details>
