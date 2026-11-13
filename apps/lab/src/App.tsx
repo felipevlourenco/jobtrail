@@ -1,6 +1,7 @@
 import { Button, Dialog } from '@repo/ui';
 import { useState } from 'react';
 import './App.css';
+import ApplicationForm from './Application/ApplicationForm';
 import CardList from './playground/CardList';
 
 type Theme = 'light' | 'dark';
@@ -44,10 +45,10 @@ function App() {
                         console.log(isOpen ? 'abriu' : 'fechou')
                     }
                 >
-                    <Dialog.Trigger>Open</Dialog.Trigger>
+                    <Dialog.Trigger>New Application</Dialog.Trigger>
                     <Dialog.Content>
-                        <Dialog.Title>My Dialog</Dialog.Title>
-                        <p>Dialog content</p>
+                        <Dialog.Title>New Application</Dialog.Title>
+                        <ApplicationForm onSubmit={() => {}} />
                     </Dialog.Content>
                 </Dialog>
             </div>

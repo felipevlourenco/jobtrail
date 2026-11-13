@@ -6,6 +6,7 @@ export interface TextFieldProps extends HTMLAttributes<HTMLInputElement> {
     label?: string;
     hint?: string;
     error?: string;
+    name?: string;
 }
 
 export function TextField({
@@ -15,6 +16,7 @@ export function TextField({
     placeholder,
     label,
     hint,
+    name,
     error,
     ...props
 }: TextFieldProps) {
@@ -39,8 +41,9 @@ export function TextField({
                 value={value}
                 placeholder={placeholder}
                 onChange={handleChange}
-                className="textfiled--input"
+                className={`textfiled--input ${error ? 'textfield--input__error' : ''}`}
                 type="text"
+                name={name}
                 {...props}
             />
             {hint && !error && (
