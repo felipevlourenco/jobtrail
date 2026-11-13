@@ -38,9 +38,8 @@ function ApplicationForm({ onSubmit }: ApplicationFormProps) {
 
         if (Object.keys(err).length > 0) {
             setErrors(err);
+            return;
         }
-
-        return;
 
         // Submit
         onSubmit();

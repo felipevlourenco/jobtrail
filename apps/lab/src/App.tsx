@@ -1,4 +1,4 @@
-import { Button, Dialog } from '@repo/ui';
+import { Button, Dialog, useDialog } from '@repo/ui';
 import { useState } from 'react';
 import './App.css';
 import ApplicationForm from './Application/ApplicationForm';
@@ -25,6 +25,13 @@ const setInitialTheme = (theme: Theme) => {
     }
 };
 
+// Must render inside <Dialog> to reach its open state.
+function NewApplicationForm() {
+    const { setOpen } = useDialog();
+
+    return <ApplicationForm onSubmit={() => setOpen(false)} />;
+}
+
 function App() {
     const [theme, setTheme] = useState<Theme>(() => getInitialTheme());
 
@@ -48,7 +55,7 @@ function App() {
                     <Dialog.Trigger>New Application</Dialog.Trigger>
                     <Dialog.Content>
                         <Dialog.Title>New Application</Dialog.Title>
-                        <ApplicationForm onSubmit={() => {}} />
+                        <NewApplicationForm />
                     </Dialog.Content>
                 </Dialog>
             </div>

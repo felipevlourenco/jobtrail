@@ -21,7 +21,7 @@ type DialogContextValue = {
 
 const DialogContext = createContext<DialogContextValue | null>(null);
 
-function useDialogContext() {
+export function useDialog() {
     const context = useContext(DialogContext);
 
     if (!context) {
@@ -65,7 +65,7 @@ function DialogRoot({
 }
 
 function DialogTrigger({ children, onClick, type, ...props }: ButtonProps) {
-    const { setOpen } = useDialogContext();
+    const { setOpen } = useDialog();
 
     return (
         <Button
@@ -88,7 +88,7 @@ function DialogTitle({
     children,
     ...props
 }: Omit<ComponentPropsWithoutRef<'h2'>, 'id'>) {
-    const { titleId } = useDialogContext();
+    const { titleId } = useDialog();
 
     return (
         <h2 {...props} id={titleId}>
@@ -108,7 +108,7 @@ function DialogContent({
     onClick,
     ...props
 }: DialogContentProps) {
-    const { open, setOpen, titleId } = useDialogContext();
+    const { open, setOpen, titleId } = useDialog();
 
     const dialogRef = useRef<HTMLDialogElement>(null);
 
