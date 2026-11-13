@@ -1,4 +1,4 @@
-import { Button } from '@repo/ui';
+import { Button, Dialog } from '@repo/ui';
 import { useState } from 'react';
 import './App.css';
 import CardList from './playground/CardList';
@@ -39,6 +39,17 @@ function App() {
                 <Button variant="primary" size="md" onClick={handleThemeChange}>
                     Toggle theme
                 </Button>
+                <Dialog
+                    onOpenChange={(isOpen) =>
+                        console.log(isOpen ? 'abriu' : 'fechou')
+                    }
+                >
+                    <Dialog.Trigger>Open</Dialog.Trigger>
+                    <Dialog.Content>
+                        <Dialog.Title>My Dialog</Dialog.Title>
+                        <p>Dialog content</p>
+                    </Dialog.Content>
+                </Dialog>
             </div>
             <CardList />
         </main>
