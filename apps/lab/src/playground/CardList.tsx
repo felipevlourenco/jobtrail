@@ -4,7 +4,7 @@ import {
     Card,
     type BadgeVariant,
     type ButtonVariants,
-} from '@repo/ui';
+} from '@jobtrail/ui';
 import { useState } from 'react';
 
 const CARDS: Array<{ id: number; header: string }> = Array.from(

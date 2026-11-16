@@ -1,5 +1,5 @@
-import { Button, Dialog, useDialog } from '@repo/ui';
-import { useState } from 'react';
+import { Button, Dialog, useDialog } from '@jobtrail/ui';
+import { useEffect, useState } from 'react';
 import './App.css';
 import ApplicationForm from './Application/ApplicationForm';
 import CardList from './playground/CardList';
@@ -35,6 +35,11 @@ function NewApplicationForm() {
 function App() {
     const [theme, setTheme] = useState<Theme>(() => getInitialTheme());
 
+    // Theme CSS targets <html> (:root[data-theme="dark"]), not a nested element.
+    useEffect(() => {
+        document.documentElement.dataset.theme = theme;
+    }, [theme]);
+
     const handleThemeChange = () => {
         const newTheme = theme === 'light' ? 'dark' : 'light';
         setTheme(newTheme);
@@ -42,7 +47,7 @@ function App() {
     };
 
     return (
-        <main data-theme={theme}>
+        <main>
             <div style={{ margin: '16px 0px' }}>
                 <Button variant="primary" size="md" onClick={handleThemeChange}>
                     Toggle theme

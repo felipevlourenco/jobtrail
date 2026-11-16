@@ -1,4 +1,4 @@
-import { Button, TextField } from '@repo/ui';
+import { Button, TextField } from '@jobtrail/ui';
 import { useState } from 'react';
 import './ApplicationForm.css';
 

@@ -175,10 +175,10 @@ importers:
 
   apps/lab:
     dependencies:
-      '@repo/tokens':
+      '@jobtrail/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
-      '@repo/ui':
+      '@jobtrail/ui':
         specifier: workspace:*
         version: link:../../packages/ui
       react:
@@ -218,7 +218,7 @@ importers:
 
   packages/ui:
     dependencies:
-      '@repo/tokens':
+      '@jobtrail/tokens':
         specifier: workspace:*
         version: link:../tokens
     devDependencies:

@@ -1,8 +1,8 @@
 import type { Preview } from '@storybook/react-vite';
 
-import '@repo/tokens/theme-dark.css';
-import '@repo/tokens/theme-light.css';
-import '@repo/tokens/tokens.css';
+import '@jobtrail/tokens/theme-dark.css';
+import '@jobtrail/tokens/theme-light.css';
+import '@jobtrail/tokens/tokens.css';
 
 const preview: Preview = {
     initialGlobals: { theme: 'light' },

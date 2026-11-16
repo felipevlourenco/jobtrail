@@ -1,4 +1,4 @@
-# @repo/tokens
+# @jobtrail/tokens
 
 Design tokens in [DTCG](https://design-tokens.github.io/community-group/format/) JSON, built with Style Dictionary.
 
@@ -15,10 +15,10 @@ Path segments go from general to specific: `category.group.variant.state`, lower
 
 ### Primitives
 
-| Kind | Pattern | Example |
-| --- | --- | --- |
-| Color | `color.<hue>.<step>` | `color.primary.500` |
-| Spacing / radius / fontSize / shadow | `<category>.<t-shirt size>` | `spacing.md` |
+| Kind                                 | Pattern                     | Example             |
+| ------------------------------------ | --------------------------- | ------------------- |
+| Color                                | `color.<hue>.<step>`        | `color.primary.500` |
+| Spacing / radius / fontSize / shadow | `<category>.<t-shirt size>` | `spacing.md`        |
 
 - Hues: `primary` (brand), `neutral` (grays), `success`, `warning`, `danger`.
 - Steps run **50 → 900**: lower = lighter, higher = darker; `500` is the base shade. `primary` and `neutral` have the full scale (50, 100–900); status hues only have `50`, `500`, `700`, `900`.
@@ -26,10 +26,10 @@ Path segments go from general to specific: `category.group.variant.state`, lower
 
 ### Semantic
 
-| Kind | Pattern | Example |
-| --- | --- | --- |
-| Global color | `color.<role>.<variant>` | `color.text.secondary` |
-| Component | `<component>.<variant>.<property>[State]` | `button.danger.background` |
+| Kind         | Pattern                                   | Example                    |
+| ------------ | ----------------------------------------- | -------------------------- |
+| Global color | `color.<role>.<variant>`                  | `color.text.secondary`     |
+| Component    | `<component>.<variant>.<property>[State]` | `button.danger.background` |
 
 - Roles: `background`, `surface`, `border`, `text`, plus status roles `success`, `warning`, `danger` (each with `background`, `border`, `text`).
 - Variants: `primary`, `secondary`, `inverse`, `brand`, `link`, `disabled`, `default`, `strong`, `raised`, `focus`.
