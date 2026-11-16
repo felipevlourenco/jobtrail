@@ -1,7 +1,7 @@
 import StyleDictionary from 'style-dictionary';
 import base from './style-dictionary.config.js'; // keep only hooks + the typescript format here
 
-const themes = { light: ':root', dark: '[data-theme="dark"]' };
+const themes = { light: ':root', dark: ':root[data-theme="dark"]' };
 
 // 1) primitives, once
 await new StyleDictionary({
