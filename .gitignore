@@ -66,3 +66,6 @@ test-results/
 
 # Miscellaneous
 *.bak
+
+*storybook.log
+storybook-static
