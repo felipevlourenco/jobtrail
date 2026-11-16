@@ -1,4 +1,4 @@
-import type { Preview } from '@storybook/react-webpack5';
+import type { Preview } from '@storybook/react-vite';
 
 import '@repo/tokens/theme-dark.css';
 import '@repo/tokens/theme-light.css';

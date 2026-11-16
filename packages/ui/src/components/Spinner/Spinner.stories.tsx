@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react-webpack5';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Spinner } from './Spinner';
 
 const meta = { component: Spinner } satisfies Meta<typeof Spinner>;

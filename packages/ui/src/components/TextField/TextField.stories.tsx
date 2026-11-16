@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react-webpack5';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { TextField } from './TextField';
 
 const meta = { component: TextField } satisfies Meta<typeof TextField>;
