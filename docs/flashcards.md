@@ -38,7 +38,7 @@
 <details>
     <summary>How does one token set become light and dark CSS, and how does the app switch between them?</summary>
 
-    build.js runs Style Dictionary once for the primitives and once per theme (primitives as `include`, the theme as `source`, filter `token.isSource` so only theme tokens are emitted). Light is `:root`, dark is `[data-theme="dark"]`. Same variable names in both; set `data-theme` on `<html>` to switch. Package `exports` decides which paths can be imported.
+    build.js runs Style Dictionary once for the primitives and once per theme (primitives as `include`, the theme as `source`, filter `token.isSource` so only theme tokens are emitted). Light is `:root`, dark is `:root[data-theme="dark"]` (more specific, so import order doesn't matter). Same variable names in both; set `data-theme` on `<html>` to switch, not on a nested element. Package `exports` decides which paths can be imported.
     **Where:** packages/tokens/build.js
 
 </details>

@@ -14,9 +14,10 @@ Components need consistent colors, spacing and typography, plus light and dark t
       Components use semantic tokens only. Naming rules live in `packages/tokens/README.md`.
 2. **Themes hold only what varies.** `src/themes/light.json` and `dark.json` contain semantic colors (and component colors like `button.*`). Spacing, radius and font size stay in the primitives, shared by both themes.
 3. **One build per theme.** `build.js` builds primitives once, then each theme with the primitives as `include` and the theme as `source`, filtered with `token.isSource`.
-    - Output: `tokens.css` (`:root`, primitives), `theme-light.css` (`:root`), `theme-dark.css` (`[data-theme="dark"]`).
+    - Output: `tokens.css` (`:root`, primitives), `theme-light.css` (`:root`), `theme-dark.css` (`:root[data-theme="dark"]`).
     - Theme CSS uses `var()` references to the primitives, so `tokens.css` must load first.
-    - Switching theme = setting `data-theme` on `<html>`.
+    - Switching theme = setting `data-theme` on `<html>` (`document.documentElement`), not on a nested element: the dark selector only matches the root.
+    - The dark selector is `:root[data-theme="dark"]`, not `[data-theme="dark"]`: both light (`:root`) and dark would otherwise have the same specificity and the last-loaded file would win, making the toggle depend on import order.
 4. **TypeScript output as a secondary channel.** `tokens.ts`, `tokens.light.ts`, `tokens.dark.ts` with resolved values, for JS that needs real colors (charts, native, tests). Components styled with CSS don't use them.
 5. **Package `exports` are the public API.** Consumers import `@jobtrail/tokens/tokens.css`, `theme-light.css`, `theme-dark.css`, `tokens`, `tokens.light`, `tokens.dark`; never `dist/...` paths.
 6. **Unique token names in the TS build** via the `name/kebab` transform, which removed false collision warnings (e.g. five different `500`s).
