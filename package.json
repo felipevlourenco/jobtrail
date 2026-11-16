@@ -23,6 +23,7 @@
     "packageManager": "pnpm@12.18.0",
     "type": "module",
     "devDependencies": {
+        "@changesets/cli": "^3.0.3",
         "turbo": "^2.11.10",
         "typescript": "^7.0.2"
     }
