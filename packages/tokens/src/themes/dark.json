@@ -89,7 +89,7 @@
         "primary": {
             "background": {
                 "$type": "color",
-                "$value": "{color.primary.500}"
+                "$value": "{color.primary.700}"
             },
             "text": {
                 "$type": "color",
@@ -97,7 +97,7 @@
             },
             "backgroundHover": {
                 "$type": "color",
-                "$value": "{color.primary.400}"
+                "$value": "{color.primary.200}"
             }
         },
         "secondary": {
