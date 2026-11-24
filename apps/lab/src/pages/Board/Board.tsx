@@ -1,5 +1,6 @@
 import { Card, Dialog, useDialog } from '@jobtrail/ui';
 import { useReducer, type DragEvent } from 'react';
+import { flushSync } from 'react-dom';
 import ApplicationForm from '../../Application/ApplicationForm';
 import boardReducer, {
     type BoardItem,
@@ -174,14 +175,24 @@ function Board() {
         const item = state.items.find((item) => item.id === draggedId);
 
         if (draggedId && item) {
-            dispatch({
-                type: 'move',
+            const action = {
+                type: 'move' as const,
                 payload: { ...item, state: targetState },
                 beforeId: getBeforeId(
                     event.currentTarget as HTMLElement,
                     event.clientY,
                 ),
-            });
+            };
+
+            // Animate cards to their new positions (View Transitions API).
+            // flushSync makes React update the DOM inside the callback.
+            if (document.startViewTransition) {
+                document.startViewTransition(() => {
+                    flushSync(() => dispatch(action));
+                });
+            } else {
+                dispatch(action);
+            }
         }
     };
 
@@ -208,6 +219,7 @@ function Board() {
                             <li
                                 key={item.id}
                                 data-id={item.id}
+                                style={{ viewTransitionName: `card-${item.id}` }}
                                 draggable
                                 onDragStart={(event) =>
                                     handleDragStart(event, item.id)
@@ -240,6 +252,7 @@ function Board() {
                             <li
                                 key={item.id}
                                 data-id={item.id}
+                                style={{ viewTransitionName: `card-${item.id}` }}
                                 draggable
                                 onDragStart={(event) =>
                                     handleDragStart(event, item.id)
@@ -272,6 +285,7 @@ function Board() {
                             <li
                                 key={item.id}
                                 data-id={item.id}
+                                style={{ viewTransitionName: `card-${item.id}` }}
                                 draggable
                                 onDragStart={(event) =>
                                     handleDragStart(event, item.id)

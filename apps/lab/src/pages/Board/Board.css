@@ -43,3 +43,9 @@ li.grab > .board--card {
 .board--card__role {
     color: var(--color-text-primary);
 }
+
+@media (prefers-reduced-motion: reduce) {
+    ::view-transition-group(*) {
+        animation: none;
+    }
+}
