@@ -1,9 +1,9 @@
-type ItemState = 'ready' | 'in_progress' | 'done';
+export type ItemState = 'applied' | 'in_progress' | 'done';
 
 export type BoardItem = {
     id: number;
-    title: string;
-    content: string;
+    company: string;
+    role: string;
     state: ItemState;
 };
 

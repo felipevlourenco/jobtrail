@@ -1,68 +1,65 @@
 import { Card, Dialog, useDialog } from '@jobtrail/ui';
-import { useReducer } from 'react';
+import { useReducer, type DragEvent } from 'react';
 import ApplicationForm from '../../Application/ApplicationForm';
-import boardReducer, { type BoardItem } from '../../store/boardReducer';
+import boardReducer, {
+    type BoardItem,
+    type ItemState,
+} from '../../store/boardReducer';
 import './Board.css';
 
 const testItems: BoardItem[] = [
     {
         id: 1,
-        title: 'Set up project',
-        content: 'Initialize the project structure and configure dependencies.',
+        company: 'Northstar',
+        role: 'Frontend Engineer',
         state: 'done',
     },
     {
         id: 2,
-        title: 'Design dashboard',
-        content:
-            'Create the initial dashboard layout and define the component structure.',
+        company: 'Brightside',
+        role: 'Product Designer',
         state: 'done',
     },
     {
         id: 3,
-        title: 'Implement authentication',
-        content: 'Add user login, registration, and session management.',
+        company: 'Acme',
+        role: 'Full Stack Developer',
         state: 'in_progress',
     },
     {
         id: 4,
-        title: 'Build kanban board',
-        content:
-            'Implement drag-and-drop functionality for moving items between columns.',
+        company: 'Greenfield Labs',
+        role: 'Software Engineer',
         state: 'in_progress',
     },
     {
         id: 5,
-        title: 'Add API integration',
-        content:
-            'Connect the frontend to the backend API and handle responses.',
-        state: 'ready',
+        company: 'Orbit',
+        role: 'Backend Engineer',
+        state: 'applied',
     },
     {
         id: 6,
-        title: 'Write unit tests',
-        content: 'Add unit tests for the main components and business logic.',
-        state: 'ready',
+        company: 'Paperplane',
+        role: 'QA Engineer',
+        state: 'applied',
     },
     {
         id: 7,
-        title: 'Improve accessibility',
-        content:
-            'Review keyboard navigation, screen reader support, and contrast.',
-        state: 'ready',
+        company: 'Atlas',
+        role: 'UX Researcher',
+        state: 'applied',
     },
     {
         id: 8,
-        title: 'Update documentation',
-        content:
-            'Document the application architecture and setup instructions.',
+        company: 'Juniper',
+        role: 'Technical Writer',
         state: 'done',
     },
     {
         id: 9,
-        title: 'Optimize performance',
-        content:
-            'Identify rendering bottlenecks and improve application performance.',
+        company: 'Cloudline',
+        role: 'Platform Engineer',
         state: 'in_progress',
     },
 ];
@@ -70,13 +67,13 @@ const testItems: BoardItem[] = [
 function Form({
     onSubmit,
 }: {
-    onSubmit: (item: { title: string; content: string }) => void;
+    onSubmit: (item: { company: string; role: string }) => void;
 }) {
     const { setOpen } = useDialog();
 
     return (
         <ApplicationForm
-            onSubmit={(item: { title: string; content: string }) => {
+            onSubmit={(item: { company: string; role: string }) => {
                 onSubmit(item);
                 setOpen(false);
             }}
@@ -87,13 +84,25 @@ function Form({
 function Board() {
     const [state, dispatch] = useReducer(boardReducer, { items: testItems });
 
-    const ready = state.items.filter((item) => item.state === 'ready');
+    const applied = state.items.filter((item) => item.state === 'applied');
     const inProgress = state.items.filter(
         (item) => item.state === 'in_progress',
     );
     const done = state.items.filter((item) => item.state === 'done');
 
-    const addItemHandler = (item: { title: string; content: string }) => {
+    const readDraggedId = (dataTransfer: DataTransfer): number | null => {
+        const rawId = dataTransfer.getData('id');
+
+        if (!rawId) {
+            return null;
+        }
+
+        const id = Number(rawId);
+
+        return Number.isInteger(id) ? id : null;
+    };
+
+    const addItemHandler = (item: { company: string; role: string }) => {
         const lastId =
             state.items.length > 0 ? state.items[state.items.length - 1].id : 0;
         dispatch({
@@ -101,9 +110,50 @@ function Board() {
             payload: {
                 ...item,
                 id: lastId + 1,
-                state: 'ready',
+                state: 'applied',
             },
         });
+    };
+
+    const handleDragStart = (event: DragEvent, id: number) => {
+        event.dataTransfer.effectAllowed = 'move';
+        event.dataTransfer.setData('id', String(id));
+
+        // add holding class
+    };
+
+    const handleDragEnd = (event: DragEvent) => {
+        event.preventDefault();
+        event.dataTransfer.dropEffect = 'move';
+
+        // remove holding class
+    };
+
+    const handleDragOver = (event: DragEvent) => {
+        event.preventDefault();
+    };
+
+    const handleDragEnter = (event: DragEvent) => {
+        event.preventDefault();
+        // add hovering class
+    };
+
+    const handleDragLeave = () => {
+        // remove hovering class
+    };
+
+    const handleDrop = (event: DragEvent, targetState: ItemState) => {
+        // remove hovering class
+
+        const draggedId = readDraggedId(event.dataTransfer);
+        const item = state.items.find((item) => item.id === draggedId);
+
+        if (draggedId && item) {
+            dispatch({
+                type: 'move',
+                payload: { ...item, state: targetState },
+            });
+        }
     };
 
     return (
@@ -118,11 +168,24 @@ function Board() {
             <div className="board--content">
                 <section>
                     <h3 className="board--title">Ready</h3>
-                    <ul className="board--column board--ready">
-                        {ready.map((item) => (
-                            <li key={item.id}>
-                                <Card id={item.id} header={item.title}>
-                                    {item.content}
+                    <ul
+                        className="board--column board--ready"
+                        onDragOver={handleDragOver}
+                        onDragEnter={handleDragEnter}
+                        onDragLeave={handleDragLeave}
+                        onDrop={(event) => handleDrop(event, 'applied')}
+                    >
+                        {applied.map((item) => (
+                            <li
+                                key={item.id}
+                                draggable
+                                onDragStart={(event) =>
+                                    handleDragStart(event, item.id)
+                                }
+                                onDragEnd={(event) => handleDragEnd(event)}
+                            >
+                                <Card id={item.id} header={item.company}>
+                                    {item.role}
                                 </Card>
                             </li>
                         ))}
@@ -130,11 +193,24 @@ function Board() {
                 </section>
                 <section>
                     <h3 className="board--title">In Progress</h3>
-                    <ul className="board--column board--in-progress">
+                    <ul
+                        className="board--column board--in-progress"
+                        onDragOver={handleDragOver}
+                        onDragEnter={handleDragEnter}
+                        onDragLeave={handleDragLeave}
+                        onDrop={(event) => handleDrop(event, 'in_progress')}
+                    >
                         {inProgress.map((item) => (
-                            <li key={item.id}>
-                                <Card id={item.id} header={item.title}>
-                                    {item.content}
+                            <li
+                                key={item.id}
+                                draggable
+                                onDragStart={(event) =>
+                                    handleDragStart(event, item.id)
+                                }
+                                onDragEnd={(event) => handleDragEnd(event)}
+                            >
+                                <Card id={item.id} header={item.company}>
+                                    {item.role}
                                 </Card>
                             </li>
                         ))}
@@ -142,11 +218,24 @@ function Board() {
                 </section>
                 <section>
                     <h3 className="board--title">Done</h3>
-                    <ul className="board--column board--done">
+                    <ul
+                        className="board--column board--done"
+                        onDragOver={handleDragOver}
+                        onDragEnter={handleDragEnter}
+                        onDragLeave={handleDragLeave}
+                        onDrop={(event) => handleDrop(event, 'done')}
+                    >
                         {done.map((item) => (
-                            <li key={item.id}>
-                                <Card id={item.id} header={item.title}>
-                                    {item.content}
+                            <li
+                                key={item.id}
+                                draggable
+                                onDragStart={(event) =>
+                                    handleDragStart(event, item.id)
+                                }
+                                onDragEnd={(event) => handleDragEnd(event)}
+                            >
+                                <Card id={item.id} header={item.company}>
+                                    {item.role}
                                 </Card>
                             </li>
                         ))}

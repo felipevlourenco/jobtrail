@@ -3,19 +3,19 @@ import { useState } from 'react';
 import './ApplicationForm.css';
 
 interface ApplicationFormProps {
-    onSubmit: ({ title, content }: { title: string; content: string }) => void;
+    onSubmit: ({ company, role }: { company: string; role: string }) => void;
 }
 
 interface ApplicationFormValues {
-    title: string;
-    content: string;
+    company: string;
+    role: string;
 }
 type Optional<T> = { [P in keyof T]?: T[P] };
 
 function parseApplication(formData: FormData): ApplicationFormValues {
     return {
-        title: String(formData.get('title') ?? ''),
-        content: String(formData.get('content') ?? ''),
+        company: String(formData.get('company') ?? ''),
+        role: String(formData.get('role') ?? ''),
     };
 }
 
@@ -44,8 +44,8 @@ function ApplicationForm({ onSubmit }: ApplicationFormProps) {
 
         // Submit
         onSubmit({
-            title: data.title,
-            content: data.content,
+            company: data.company,
+            role: data.role,
         });
         setErrors(null);
         setFormKey((key) => key + 1);
@@ -55,14 +55,14 @@ function ApplicationForm({ onSubmit }: ApplicationFormProps) {
         <form action={handleAction} key={formKey}>
             <div className="form-container">
                 <TextField
-                    name="title"
-                    placeholder="title"
-                    error={errors?.title}
+                    name="company"
+                    placeholder="company"
+                    error={errors?.company}
                 />
                 <TextField
-                    name="content"
-                    placeholder="content"
-                    error={errors?.content}
+                    name="role"
+                    placeholder="role"
+                    error={errors?.role}
                 />
                 <Button type="submit">Submit</Button>
             </div>
