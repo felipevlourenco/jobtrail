@@ -81,6 +81,21 @@ function Form({
     );
 }
 
+// Id of the card the pointer is above (drop BEFORE it), or null for the end.
+const getBeforeId = (column: HTMLElement, clientY: number): number | null => {
+    const cards = column.querySelectorAll<HTMLElement>('li[data-id]:not(.grab)');
+
+    for (const card of cards) {
+        const { top, height } = card.getBoundingClientRect();
+
+        if (clientY < top + height / 2) {
+            return Number(card.dataset.id);
+        }
+    }
+
+    return null;
+};
+
 function Board() {
     const [state, dispatch] = useReducer(boardReducer, { items: testItems });
 
@@ -103,8 +118,8 @@ function Board() {
     };
 
     const addItemHandler = (item: { company: string; role: string }) => {
-        const lastId =
-            state.items.length > 0 ? state.items[state.items.length - 1].id : 0;
+        // Array order changes when cards are moved, so use the highest id.
+        const lastId = Math.max(0, ...state.items.map((item) => item.id));
         dispatch({
             type: 'add',
             payload: {
@@ -162,6 +177,10 @@ function Board() {
             dispatch({
                 type: 'move',
                 payload: { ...item, state: targetState },
+                beforeId: getBeforeId(
+                    event.currentTarget as HTMLElement,
+                    event.clientY,
+                ),
             });
         }
     };
@@ -188,6 +207,7 @@ function Board() {
                         {applied.map((item) => (
                             <li
                                 key={item.id}
+                                data-id={item.id}
                                 draggable
                                 onDragStart={(event) =>
                                     handleDragStart(event, item.id)
@@ -219,6 +239,7 @@ function Board() {
                         {inProgress.map((item) => (
                             <li
                                 key={item.id}
+                                data-id={item.id}
                                 draggable
                                 onDragStart={(event) =>
                                     handleDragStart(event, item.id)
@@ -250,6 +271,7 @@ function Board() {
                         {done.map((item) => (
                             <li
                                 key={item.id}
+                                data-id={item.id}
                                 draggable
                                 onDragStart={(event) =>
                                     handleDragStart(event, item.id)
