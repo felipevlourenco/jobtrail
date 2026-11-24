@@ -118,15 +118,19 @@ function Board() {
     const handleDragStart = (event: DragEvent, id: number) => {
         event.dataTransfer.effectAllowed = 'move';
         event.dataTransfer.setData('id', String(id));
-
-        // add holding class
+        event.currentTarget.classList.add('grab');
     };
 
     const handleDragEnd = (event: DragEvent) => {
         event.preventDefault();
         event.dataTransfer.dropEffect = 'move';
 
-        // remove holding class
+        // The drag may end outside any column, so clear every hover.
+        document
+            .querySelectorAll('.board--column.hover')
+            .forEach((column) => column.classList.remove('hover'));
+
+        event.currentTarget.classList.remove('grab');
     };
 
     const handleDragOver = (event: DragEvent) => {
@@ -135,15 +139,21 @@ function Board() {
 
     const handleDragEnter = (event: DragEvent) => {
         event.preventDefault();
-        // add hovering class
+        event.currentTarget.classList.add('hover');
     };
 
-    const handleDragLeave = () => {
-        // remove hovering class
+    const handleDragLeave = (event: DragEvent) => {
+        // dragleave also fires when moving onto a child (a card). Only remove
+        // the class when the pointer really leaves the column.
+        if (event.currentTarget.contains(event.relatedTarget as Node | null)) {
+            return;
+        }
+
+        event.currentTarget.classList.remove('hover');
     };
 
     const handleDrop = (event: DragEvent, targetState: ItemState) => {
-        // remove hovering class
+        event.currentTarget.classList.remove('hover');
 
         const draggedId = readDraggedId(event.dataTransfer);
         const item = state.items.find((item) => item.id === draggedId);
@@ -184,8 +194,14 @@ function Board() {
                                 }
                                 onDragEnd={(event) => handleDragEnd(event)}
                             >
-                                <Card id={item.id} header={item.company}>
-                                    {item.role}
+                                <Card
+                                    id={item.id}
+                                    header={item.company}
+                                    className="board--card"
+                                >
+                                    <span className="board--card__role">
+                                        {item.role}
+                                    </span>
                                 </Card>
                             </li>
                         ))}
@@ -209,8 +225,14 @@ function Board() {
                                 }
                                 onDragEnd={(event) => handleDragEnd(event)}
                             >
-                                <Card id={item.id} header={item.company}>
-                                    {item.role}
+                                <Card
+                                    id={item.id}
+                                    header={item.company}
+                                    className="board--card"
+                                >
+                                    <span className="board--card__role">
+                                        {item.role}
+                                    </span>
                                 </Card>
                             </li>
                         ))}
@@ -234,8 +256,14 @@ function Board() {
                                 }
                                 onDragEnd={(event) => handleDragEnd(event)}
                             >
-                                <Card id={item.id} header={item.company}>
-                                    {item.role}
+                                <Card
+                                    id={item.id}
+                                    header={item.company}
+                                    className="board--card"
+                                >
+                                    <span className="board--card__role">
+                                        {item.role}
+                                    </span>
                                 </Card>
                             </li>
                         ))}

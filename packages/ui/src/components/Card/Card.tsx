@@ -10,11 +10,17 @@ export interface CardProps extends Omit<HTMLAttributes<HTMLElement>, 'id'> {
     headingLevel?: CardHeadingLevel;
 }
 
-export function Card({ id, header, children, headingLevel = 2 }: CardProps) {
+export function Card({
+    id,
+    header,
+    children,
+    headingLevel = 2,
+    className,
+}: CardProps) {
     const Heading = `h${headingLevel}` as 'h1' | 'h2' | 'h3' | 'h4';
 
     return (
-        <div className="card">
+        <div className={`card ${className ?? ''}`}>
             {header && <Heading className="card--heading">{header}</Heading>}
             {children}
         </div>

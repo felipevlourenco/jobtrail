@@ -1,12 +1,19 @@
 .board--wrapper {
+    flex: 1;
     display: flex;
     flex-direction: column;
     gap: var(--spacing-xl);
 }
 
 .board--content {
+    flex: 1;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.board--content > section {
+    display: flex;
+    flex-direction: column;
 }
 
 .board--title {
@@ -15,7 +22,24 @@
 }
 
 .board--column {
+    flex: 1;
     list-style: none;
     margin: 0;
     padding: 0;
+
+    &.hover {
+        background: var(--color-background-brand);
+    }
+}
+
+.board--card {
+    background: var(--color-background-primary);
+}
+
+li.grab > .board--card {
+    border: 2px solid var(--color-border-strong);
+}
+
+.board--card__role {
+    color: var(--color-text-primary);
 }
