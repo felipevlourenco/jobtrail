@@ -1,7 +1,6 @@
-import { Button, useDialog } from '@jobtrail/ui';
+import { Button } from '@jobtrail/ui';
 import { useEffect, useState } from 'react';
 import './App.css';
-import ApplicationForm from './Application/ApplicationForm';
 import Board from './pages/Board/Board';
 
 type Theme = 'light' | 'dark';
@@ -25,13 +24,6 @@ const setInitialTheme = (theme: Theme) => {
     }
 };
 
-// Must render inside <Dialog> to reach its open state.
-function NewApplicationForm() {
-    const { setOpen } = useDialog();
-
-    return <ApplicationForm onSubmit={() => setOpen(false)} />;
-}
-
 function App() {
     const [theme, setTheme] = useState<Theme>(() => getInitialTheme());
 
@@ -52,17 +44,6 @@ function App() {
                 <Button variant="primary" size="md" onClick={handleThemeChange}>
                     Toggle theme
                 </Button>
-                {/* <Dialog
-                    onOpenChange={(isOpen) =>
-                        console.log(isOpen ? 'abriu' : 'fechou')
-                    }
-                >
-                    <Dialog.Trigger>New Application</Dialog.Trigger>
-                    <Dialog.Content>
-                        <Dialog.Title>New Application</Dialog.Title>
-                        <NewApplicationForm />
-                    </Dialog.Content>
-                </Dialog> */}
             </div>
             {/* <CardList /> */}
             <Board />
