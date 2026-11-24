@@ -1,5 +1,5 @@
 import { Card, Dialog, useDialog } from '@jobtrail/ui';
-import { useReducer, type DragEvent } from 'react';
+import { useReducer, useRef, useState, type DragEvent } from 'react';
 import { flushSync } from 'react-dom';
 import ApplicationForm from '../../Application/ApplicationForm';
 import boardReducer, {
@@ -99,6 +99,13 @@ const getBeforeId = (column: HTMLElement, clientY: number): number | null => {
 
 function Board() {
     const [state, dispatch] = useReducer(boardReducer, { items: testItems });
+    // Where the held card would land: in `column`, before card `beforeId`
+    // (null = at the end). Used to open a gap while dragging.
+    const [dropTarget, setDropTarget] = useState<{
+        column: ItemState;
+        beforeId: number | null;
+    } | null>(null);
+    const contentRef = useRef<HTMLDivElement>(null);
 
     const applied = state.items.filter((item) => item.state === 'applied');
     const inProgress = state.items.filter(
@@ -135,6 +142,12 @@ function Board() {
         event.dataTransfer.effectAllowed = 'move';
         event.dataTransfer.setData('id', String(id));
         event.currentTarget.classList.add('grab');
+
+        // The gap that opens must be as tall as the card being held.
+        contentRef.current?.style.setProperty(
+            '--drop-gap',
+            `${event.currentTarget.getBoundingClientRect().height}px`,
+        );
     };
 
     const handleDragEnd = (event: DragEvent) => {
@@ -145,12 +158,25 @@ function Board() {
         document
             .querySelectorAll('.board--column.hover')
             .forEach((column) => column.classList.remove('hover'));
+        setDropTarget(null);
 
         event.currentTarget.classList.remove('grab');
     };
 
-    const handleDragOver = (event: DragEvent) => {
+    const handleDragOver = (event: DragEvent, column: ItemState) => {
         event.preventDefault();
+
+        const beforeId = getBeforeId(
+            event.currentTarget as HTMLElement,
+            event.clientY,
+        );
+
+        // dragover fires constantly: only update state when it changes.
+        setDropTarget((prev) =>
+            prev?.column === column && prev.beforeId === beforeId
+                ? prev
+                : { column, beforeId },
+        );
     };
 
     const handleDragEnter = (event: DragEvent) => {
@@ -166,10 +192,12 @@ function Board() {
         }
 
         event.currentTarget.classList.remove('hover');
+        setDropTarget(null);
     };
 
     const handleDrop = (event: DragEvent, targetState: ItemState) => {
         event.currentTarget.classList.remove('hover');
+        setDropTarget(null);
 
         const draggedId = readDraggedId(event.dataTransfer);
         const item = state.items.find((item) => item.id === draggedId);
@@ -196,6 +224,19 @@ function Board() {
         }
     };
 
+    // Cards from the drop point downward slide down by the held card's height.
+    const itemClass = (column: ItemState, list: BoardItem[], index: number) => {
+        if (dropTarget?.column !== column || dropTarget.beforeId === null) {
+            return undefined;
+        }
+
+        const dropIndex = list.findIndex(
+            (item) => item.id === dropTarget.beforeId,
+        );
+
+        return dropIndex !== -1 && index >= dropIndex ? 'make-room' : undefined;
+    };
+
     return (
         <div className="board--wrapper">
             <Dialog>
@@ -205,20 +246,21 @@ function Board() {
                     <Form onSubmit={addItemHandler} />
                 </Dialog.Content>
             </Dialog>
-            <div className="board--content">
+            <div className="board--content" ref={contentRef}>
                 <section>
                     <h3 className="board--title">Ready</h3>
                     <ul
                         className="board--column board--ready"
-                        onDragOver={handleDragOver}
+                        onDragOver={(event) => handleDragOver(event, 'applied')}
                         onDragEnter={handleDragEnter}
                         onDragLeave={handleDragLeave}
                         onDrop={(event) => handleDrop(event, 'applied')}
                     >
-                        {applied.map((item) => (
+                        {applied.map((item, index) => (
                             <li
                                 key={item.id}
                                 data-id={item.id}
+                                className={itemClass('applied', applied, index)}
                                 style={{ viewTransitionName: `card-${item.id}` }}
                                 draggable
                                 onDragStart={(event) =>
@@ -243,15 +285,16 @@ function Board() {
                     <h3 className="board--title">In Progress</h3>
                     <ul
                         className="board--column board--in-progress"
-                        onDragOver={handleDragOver}
+                        onDragOver={(event) => handleDragOver(event, 'in_progress')}
                         onDragEnter={handleDragEnter}
                         onDragLeave={handleDragLeave}
                         onDrop={(event) => handleDrop(event, 'in_progress')}
                     >
-                        {inProgress.map((item) => (
+                        {inProgress.map((item, index) => (
                             <li
                                 key={item.id}
                                 data-id={item.id}
+                                className={itemClass('in_progress', inProgress, index)}
                                 style={{ viewTransitionName: `card-${item.id}` }}
                                 draggable
                                 onDragStart={(event) =>
@@ -276,15 +319,16 @@ function Board() {
                     <h3 className="board--title">Done</h3>
                     <ul
                         className="board--column board--done"
-                        onDragOver={handleDragOver}
+                        onDragOver={(event) => handleDragOver(event, 'done')}
                         onDragEnter={handleDragEnter}
                         onDragLeave={handleDragLeave}
                         onDrop={(event) => handleDrop(event, 'done')}
                     >
-                        {done.map((item) => (
+                        {done.map((item, index) => (
                             <li
                                 key={item.id}
                                 data-id={item.id}
+                                className={itemClass('done', done, index)}
                                 style={{ viewTransitionName: `card-${item.id}` }}
                                 draggable
                                 onDragStart={(event) =>

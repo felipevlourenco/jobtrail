@@ -49,3 +49,10 @@ li.grab > .board--card {
         animation: none;
     }
 }
+
+.board--column li.make-room {
+    transform: translateY(var(--drop-gap));
+    /* Only on the entering state, so the gap closes instantly on drop and
+       doesn't fight the view transition. */
+    transition: transform 150ms ease;
+}
