@@ -1,8 +1,8 @@
-import { Button, Dialog, useDialog } from '@jobtrail/ui';
+import { Button, useDialog } from '@jobtrail/ui';
 import { useEffect, useState } from 'react';
 import './App.css';
 import ApplicationForm from './Application/ApplicationForm';
-import CardList from './playground/CardList';
+import Board from './pages/Board/Board';
 
 type Theme = 'light' | 'dark';
 const THEME_KEY = 'theme';
@@ -52,7 +52,7 @@ function App() {
                 <Button variant="primary" size="md" onClick={handleThemeChange}>
                     Toggle theme
                 </Button>
-                <Dialog
+                {/* <Dialog
                     onOpenChange={(isOpen) =>
                         console.log(isOpen ? 'abriu' : 'fechou')
                     }
@@ -62,9 +62,10 @@ function App() {
                         <Dialog.Title>New Application</Dialog.Title>
                         <NewApplicationForm />
                     </Dialog.Content>
-                </Dialog>
+                </Dialog> */}
             </div>
-            <CardList />
+            {/* <CardList /> */}
+            <Board />
         </main>
     );
 }

@@ -3,23 +3,24 @@ import { useState } from 'react';
 import './ApplicationForm.css';
 
 interface ApplicationFormProps {
-    onSubmit: () => void;
+    onSubmit: ({ title, content }: { title: string; content: string }) => void;
 }
 
 interface ApplicationFormValues {
-    company: string;
-    role: string;
+    title: string;
+    content: string;
 }
 type Optional<T> = { [P in keyof T]?: T[P] };
 
 function parseApplication(formData: FormData): ApplicationFormValues {
     return {
-        company: String(formData.get('company') ?? ''),
-        role: String(formData.get('role') ?? ''),
+        title: String(formData.get('title') ?? ''),
+        content: String(formData.get('content') ?? ''),
     };
 }
 
 function ApplicationForm({ onSubmit }: ApplicationFormProps) {
+    const [formKey, setFormKey] = useState(0);
     const [errors, setErrors] =
         useState<Optional<ApplicationFormValues> | null>(null);
 
@@ -42,21 +43,26 @@ function ApplicationForm({ onSubmit }: ApplicationFormProps) {
         }
 
         // Submit
-        onSubmit();
+        onSubmit({
+            title: data.title,
+            content: data.content,
+        });
+        setErrors(null);
+        setFormKey((key) => key + 1);
     };
 
     return (
-        <form action={handleAction}>
+        <form action={handleAction} key={formKey}>
             <div className="form-container">
                 <TextField
-                    name="company"
-                    placeholder="Company"
-                    error={errors?.company}
+                    name="title"
+                    placeholder="title"
+                    error={errors?.title}
                 />
                 <TextField
-                    name="role"
-                    placeholder="Role"
-                    error={errors?.role}
+                    name="content"
+                    placeholder="content"
+                    error={errors?.content}
                 />
                 <Button type="submit">Submit</Button>
             </div>
