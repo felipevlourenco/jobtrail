@@ -5,6 +5,7 @@ import {
     useDebounce,
     useDialog,
     useLocalStorage,
+    useToast,
 } from '@jobtrail/ui';
 import {
     useEffect,
@@ -121,6 +122,8 @@ function Board() {
         items: getValue() || [],
     });
 
+    const { showToast } = useToast();
+
     useEffect(() => {
         setValue(state.items);
     }, [state.items]);
@@ -171,6 +174,12 @@ function Board() {
                 id: lastId + 1,
                 state: 'applied',
             },
+        });
+
+        showToast({
+            title: 'Porsition created',
+            message: `${item.company} - ${item.role}`,
+            type: 'success',
         });
     };
 
@@ -257,6 +266,11 @@ function Board() {
             } else {
                 dispatch(action);
             }
+
+            showToast({
+                message: 'Position moved',
+                type: 'warning',
+            });
         }
     };
 

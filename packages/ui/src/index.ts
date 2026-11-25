@@ -15,5 +15,7 @@ export {
     TextField,
     type TextFieldProps,
 } from './components/TextField/TextField';
+export { Toast, type ToastProps } from './components/Toast/Toast';
+export { ToastProvider, useToast } from './Contexts/Toast/ToastContext';
 export { useDebounce } from './hooks/useDebounce/useDebounce';
 export { useLocalStorage } from './hooks/useLocalStorage/useLocalStorage';

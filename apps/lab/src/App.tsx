@@ -1,4 +1,4 @@
-import { Button } from '@jobtrail/ui';
+import { Button, ToastProvider } from '@jobtrail/ui';
 import { useEffect, useState } from 'react';
 import './App.css';
 import Board from './pages/Board/Board';
@@ -39,15 +39,21 @@ function App() {
     };
 
     return (
-        <main>
-            <div style={{ margin: '16px 0px' }}>
-                <Button variant="primary" size="md" onClick={handleThemeChange}>
-                    Toggle theme
-                </Button>
-            </div>
-            {/* <CardList /> */}
-            <Board />
-        </main>
+        <ToastProvider>
+            <main>
+                <div style={{ margin: '16px 0px' }}>
+                    <Button
+                        variant="primary"
+                        size="md"
+                        onClick={handleThemeChange}
+                    >
+                        Toggle theme
+                    </Button>
+                </div>
+                {/* <CardList /> */}
+                <Board />
+            </main>
+        </ToastProvider>
     );
 }
 
