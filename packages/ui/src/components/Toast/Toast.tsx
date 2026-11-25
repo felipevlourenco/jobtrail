@@ -25,7 +25,7 @@ export function Toast({
     }, []);
 
     return (
-        <div className={`toast--wrapper ${type}`}>
+        <div className={`toast--wrapper ${type}`} aria-live="polite">
             <div className="toast--info">
                 {title && <h4 className="toast--title">{title}</h4>}
                 <span className="toast--content">{children}</span>

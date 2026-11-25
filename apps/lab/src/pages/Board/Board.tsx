@@ -4,20 +4,19 @@ import {
     TextField,
     useDebounce,
     useDialog,
-    useLocalStorage,
     useToast,
 } from '@jobtrail/ui';
 import {
-    useEffect,
-    useReducer,
     useRef,
     useState,
     type ChangeEvent,
+    type Dispatch,
     type DragEvent,
 } from 'react';
 import { flushSync } from 'react-dom';
 import ApplicationForm from '../../Application/ApplicationForm';
-import boardReducer, {
+import {
+    type BoardAction,
     type BoardItem,
     type ItemState,
 } from '../../store/boardReducer';
@@ -114,19 +113,15 @@ const getBeforeId = (column: HTMLElement, clientY: number): number | null => {
     return null;
 };
 
-function Board() {
+type BoardProps = {
+    items: BoardItem[];
+    dispatch: Dispatch<BoardAction>;
+};
+
+function Board({ items, dispatch }: BoardProps) {
     const [debouncedQuery, setDebouncedQuery] = useState('');
     const debouncedChange = useDebounce(setDebouncedQuery);
-    const { getValue, setValue } = useLocalStorage<BoardItem[]>('board', []);
-    const [state, dispatch] = useReducer(boardReducer, {
-        items: getValue() || [],
-    });
-
     const { showToast } = useToast();
-
-    useEffect(() => {
-        setValue(state.items);
-    }, [state.items]);
 
     // Where the held card would land: in `column`, before card `beforeId`
     // (null = at the end). Used to open a gap while dragging.
@@ -136,7 +131,7 @@ function Board() {
     } | null>(null);
     const contentRef = useRef<HTMLDivElement>(null);
 
-    const filterdList = state.items.filter(
+    const filterdList = items.filter(
         (item) =>
             item.company
                 .toLocaleLowerCase()
@@ -166,7 +161,7 @@ function Board() {
 
     const addItemHandler = (item: { company: string; role: string }) => {
         // Array order changes when cards are moved, so use the highest id.
-        const lastId = Math.max(0, ...state.items.map((item) => item.id));
+        const lastId = Math.max(0, ...items.map((item) => item.id));
         dispatch({
             type: 'add',
             payload: {
@@ -245,7 +240,7 @@ function Board() {
         setDropTarget(null);
 
         const draggedId = readDraggedId(event.dataTransfer);
-        const item = state.items.find((item) => item.id === draggedId);
+        const item = items.find((item) => item.id === draggedId);
 
         if (draggedId && item) {
             const action = {

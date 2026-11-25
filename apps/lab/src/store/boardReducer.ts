@@ -9,7 +9,7 @@ export type BoardItem = {
 
 type BoardActionType = 'add' | 'edit' | 'remove' | 'move';
 
-type BoardAction = {
+export type BoardAction = {
     type: BoardActionType;
     payload: BoardItem;
     // 'move' only: drop the item before this id; null/undefined = end of list

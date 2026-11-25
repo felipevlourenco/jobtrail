@@ -11,6 +11,7 @@ export {
 export { Card, type CardProps } from './components/Card/Card';
 export { Dialog, useDialog } from './components/Dialog/Dialog';
 export { Spinner } from './components/Spinner/Spinner';
+export { Tabs } from './components/Tabs/Tabs';
 export {
     TextField,
     type TextFieldProps,
