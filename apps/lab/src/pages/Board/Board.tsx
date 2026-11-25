@@ -1,5 +1,19 @@
-import { Card, Dialog, useDialog, useLocalStorage } from '@jobtrail/ui';
-import { useEffect, useReducer, useRef, useState, type DragEvent } from 'react';
+import {
+    Card,
+    Dialog,
+    TextField,
+    useDebounce,
+    useDialog,
+    useLocalStorage,
+} from '@jobtrail/ui';
+import {
+    useEffect,
+    useReducer,
+    useRef,
+    useState,
+    type ChangeEvent,
+    type DragEvent,
+} from 'react';
 import { flushSync } from 'react-dom';
 import ApplicationForm from '../../Application/ApplicationForm';
 import boardReducer, {
@@ -100,6 +114,8 @@ const getBeforeId = (column: HTMLElement, clientY: number): number | null => {
 };
 
 function Board() {
+    const [debouncedQuery, setDebouncedQuery] = useState('');
+    const debouncedChange = useDebounce(setDebouncedQuery);
     const { getValue, setValue } = useLocalStorage<BoardItem[]>('board', []);
     const [state, dispatch] = useReducer(boardReducer, {
         items: getValue() || [],
@@ -117,11 +133,21 @@ function Board() {
     } | null>(null);
     const contentRef = useRef<HTMLDivElement>(null);
 
-    const applied = state.items.filter((item) => item.state === 'applied');
-    const inProgress = state.items.filter(
+    const filterdList = state.items.filter(
+        (item) =>
+            item.company
+                .toLocaleLowerCase()
+                .includes(debouncedQuery.toLocaleLowerCase()) ||
+            item.role
+                .toLocaleLowerCase()
+                .includes(debouncedQuery.toLocaleLowerCase()),
+    );
+
+    const applied = filterdList.filter((item) => item.state === 'applied');
+    const inProgress = filterdList.filter(
         (item) => item.state === 'in_progress',
     );
-    const done = state.items.filter((item) => item.state === 'done');
+    const done = filterdList.filter((item) => item.state === 'done');
 
     const readDraggedId = (dataTransfer: DataTransfer): number | null => {
         const rawId = dataTransfer.getData('id');
@@ -247,8 +273,14 @@ function Board() {
         return dropIndex !== -1 && index >= dropIndex ? 'make-room' : undefined;
     };
 
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const { value } = event.target;
+        debouncedChange(value);
+    };
+
     return (
         <div className="board--wrapper">
+            <TextField label="Search item" onChange={handleChange} />
             <Dialog>
                 <Dialog.Trigger>Add new Item</Dialog.Trigger>
                 <Dialog.Content>

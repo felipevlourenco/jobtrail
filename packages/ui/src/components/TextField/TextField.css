@@ -6,6 +6,7 @@
 
 .textfiled--label {
     font-size: var(--font-size-sm);
+    color: var(--color-text-primary);
 }
 
 .textfiled--input {

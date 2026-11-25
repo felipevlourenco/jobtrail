@@ -15,4 +15,5 @@ export {
     TextField,
     type TextFieldProps,
 } from './components/TextField/TextField';
+export { useDebounce } from './hooks/useDebounce/useDebounce';
 export { useLocalStorage } from './hooks/useLocalStorage/useLocalStorage';
