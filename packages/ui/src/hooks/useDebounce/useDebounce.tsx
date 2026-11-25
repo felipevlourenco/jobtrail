@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 
 export function useDebounce<T extends unknown[]>(
     callback: (...args: T) => void,
@@ -11,6 +11,14 @@ export function useDebounce<T extends unknown[]>(
         callbackRef.current = callback;
     });
 
+    useEffect(() => {
+        return () => {
+            if (timer.current) {
+                clearTimeout(timer.current);
+            }
+        };
+    }, []);
+
     return (...values: T) => {
         if (timer.current) {
             clearTimeout(timer.current);
@@ -19,11 +27,5 @@ export function useDebounce<T extends unknown[]>(
         timer.current = setTimeout(() => {
             callbackRef.current(...values);
         }, delay);
-
-        () => {
-            if (timer.current) {
-                clearTimeout(timer.current);
-            }
-        };
     };
 }

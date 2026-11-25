@@ -28,3 +28,13 @@ it('writes and reads a value', () => {
 
     expect(result.current.getValue()).toEqual({ count: 1 });
 });
+
+it.each([0, false, ''])('keeps a saved falsy value: %j', (saved) => {
+    window.localStorage.setItem('key', JSON.stringify(saved));
+
+    const { result } = renderHook(() =>
+        useLocalStorage<unknown>('key', 'initial'),
+    );
+
+    expect(result.current.getValue()).toBe(saved);
+});

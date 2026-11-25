@@ -15,7 +15,7 @@ export function useLocalStorage<T>(
         try {
             const value = window.localStorage.getItem(key);
 
-            if (value) {
+            if (value !== null) {
                 const parsed = JSON.parse(value) as T;
 
                 return parsed;
@@ -43,7 +43,7 @@ export function useLocalStorage<T>(
 
         const hasValue = getValue();
 
-        if (!hasValue) {
+        if (hasValue === null) {
             const stringfied = JSON.stringify(initialValue);
             window.localStorage.setItem(key, stringfied);
         }

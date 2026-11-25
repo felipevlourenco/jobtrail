@@ -26,3 +26,14 @@ it('calls the callback once, after the delay, with the last arguments', () => {
 
     expect(callback).toHaveBeenCalledExactlyOnceWith('ab');
 });
+
+it('does not call the callback after unmount', () => {
+    const callback = vi.fn();
+    const { result, unmount } = renderHook(() => useDebounce(callback));
+
+    result.current();
+    unmount();
+    vi.runAllTimers();
+
+    expect(callback).not.toHaveBeenCalled();
+});
