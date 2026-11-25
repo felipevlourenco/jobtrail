@@ -15,3 +15,4 @@ export {
     TextField,
     type TextFieldProps,
 } from './components/TextField/TextField';
+export { useLocalStorage } from './hooks/useLocalStorage/useLocalStorage';

@@ -1,5 +1,5 @@
-import { Card, Dialog, useDialog } from '@jobtrail/ui';
-import { useReducer, useRef, useState, type DragEvent } from 'react';
+import { Card, Dialog, useDialog, useLocalStorage } from '@jobtrail/ui';
+import { useEffect, useReducer, useRef, useState, type DragEvent } from 'react';
 import { flushSync } from 'react-dom';
 import ApplicationForm from '../../Application/ApplicationForm';
 import boardReducer, {
@@ -8,62 +8,62 @@ import boardReducer, {
 } from '../../store/boardReducer';
 import './Board.css';
 
-const testItems: BoardItem[] = [
-    {
-        id: 1,
-        company: 'Northstar',
-        role: 'Frontend Engineer',
-        state: 'done',
-    },
-    {
-        id: 2,
-        company: 'Brightside',
-        role: 'Product Designer',
-        state: 'done',
-    },
-    {
-        id: 3,
-        company: 'Acme',
-        role: 'Full Stack Developer',
-        state: 'in_progress',
-    },
-    {
-        id: 4,
-        company: 'Greenfield Labs',
-        role: 'Software Engineer',
-        state: 'in_progress',
-    },
-    {
-        id: 5,
-        company: 'Orbit',
-        role: 'Backend Engineer',
-        state: 'applied',
-    },
-    {
-        id: 6,
-        company: 'Paperplane',
-        role: 'QA Engineer',
-        state: 'applied',
-    },
-    {
-        id: 7,
-        company: 'Atlas',
-        role: 'UX Researcher',
-        state: 'applied',
-    },
-    {
-        id: 8,
-        company: 'Juniper',
-        role: 'Technical Writer',
-        state: 'done',
-    },
-    {
-        id: 9,
-        company: 'Cloudline',
-        role: 'Platform Engineer',
-        state: 'in_progress',
-    },
-];
+// const testItems: BoardItem[] = [
+//     {
+//         id: 1,
+//         company: 'Northstar',
+//         role: 'Frontend Engineer',
+//         state: 'done',
+//     },
+//     {
+//         id: 2,
+//         company: 'Brightside',
+//         role: 'Product Designer',
+//         state: 'done',
+//     },
+//     {
+//         id: 3,
+//         company: 'Acme',
+//         role: 'Full Stack Developer',
+//         state: 'in_progress',
+//     },
+//     {
+//         id: 4,
+//         company: 'Greenfield Labs',
+//         role: 'Software Engineer',
+//         state: 'in_progress',
+//     },
+//     {
+//         id: 5,
+//         company: 'Orbit',
+//         role: 'Backend Engineer',
+//         state: 'applied',
+//     },
+//     {
+//         id: 6,
+//         company: 'Paperplane',
+//         role: 'QA Engineer',
+//         state: 'applied',
+//     },
+//     {
+//         id: 7,
+//         company: 'Atlas',
+//         role: 'UX Researcher',
+//         state: 'applied',
+//     },
+//     {
+//         id: 8,
+//         company: 'Juniper',
+//         role: 'Technical Writer',
+//         state: 'done',
+//     },
+//     {
+//         id: 9,
+//         company: 'Cloudline',
+//         role: 'Platform Engineer',
+//         state: 'in_progress',
+//     },
+// ];
 
 function Form({
     onSubmit,
@@ -84,7 +84,9 @@ function Form({
 
 // Id of the card the pointer is above (drop BEFORE it), or null for the end.
 const getBeforeId = (column: HTMLElement, clientY: number): number | null => {
-    const cards = column.querySelectorAll<HTMLElement>('li[data-id]:not(.grab)');
+    const cards = column.querySelectorAll<HTMLElement>(
+        'li[data-id]:not(.grab)',
+    );
 
     for (const card of cards) {
         const { top, height } = card.getBoundingClientRect();
@@ -98,7 +100,15 @@ const getBeforeId = (column: HTMLElement, clientY: number): number | null => {
 };
 
 function Board() {
-    const [state, dispatch] = useReducer(boardReducer, { items: testItems });
+    const { getValue, setValue } = useLocalStorage<BoardItem[]>('board', []);
+    const [state, dispatch] = useReducer(boardReducer, {
+        items: getValue() || [],
+    });
+
+    useEffect(() => {
+        setValue(state.items);
+    }, [state.items]);
+
     // Where the held card would land: in `column`, before card `beforeId`
     // (null = at the end). Used to open a gap while dragging.
     const [dropTarget, setDropTarget] = useState<{
@@ -261,7 +271,9 @@ function Board() {
                                 key={item.id}
                                 data-id={item.id}
                                 className={itemClass('applied', applied, index)}
-                                style={{ viewTransitionName: `card-${item.id}` }}
+                                style={{
+                                    viewTransitionName: `card-${item.id}`,
+                                }}
                                 draggable
                                 onDragStart={(event) =>
                                     handleDragStart(event, item.id)
@@ -285,7 +297,9 @@ function Board() {
                     <h3 className="board--title">In Progress</h3>
                     <ul
                         className="board--column board--in-progress"
-                        onDragOver={(event) => handleDragOver(event, 'in_progress')}
+                        onDragOver={(event) =>
+                            handleDragOver(event, 'in_progress')
+                        }
                         onDragEnter={handleDragEnter}
                         onDragLeave={handleDragLeave}
                         onDrop={(event) => handleDrop(event, 'in_progress')}
@@ -294,8 +308,14 @@ function Board() {
                             <li
                                 key={item.id}
                                 data-id={item.id}
-                                className={itemClass('in_progress', inProgress, index)}
-                                style={{ viewTransitionName: `card-${item.id}` }}
+                                className={itemClass(
+                                    'in_progress',
+                                    inProgress,
+                                    index,
+                                )}
+                                style={{
+                                    viewTransitionName: `card-${item.id}`,
+                                }}
                                 draggable
                                 onDragStart={(event) =>
                                     handleDragStart(event, item.id)
@@ -329,7 +349,9 @@ function Board() {
                                 key={item.id}
                                 data-id={item.id}
                                 className={itemClass('done', done, index)}
-                                style={{ viewTransitionName: `card-${item.id}` }}
+                                style={{
+                                    viewTransitionName: `card-${item.id}`,
+                                }}
                                 draggable
                                 onDragStart={(event) =>
                                     handleDragStart(event, item.id)
